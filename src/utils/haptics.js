@@ -41,7 +41,11 @@ export const triggerHaptic = (type = 'medium') => {
 
   // 2. Trigger physical vibration motor on Android / supporting hardware
   try {
-    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+      // Chrome/Chromium security requirement: navigator.vibrate requires prior user activation
+      if (navigator.userActivation && !navigator.userActivation.hasBeenActive) {
+        return;
+      }
       if (type === 'heavy' || type === 'pop') {
         // Double punch for confetti pop & gate open
         navigator.vibrate([60, 40, 80]);

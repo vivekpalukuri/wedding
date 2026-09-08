@@ -8,12 +8,27 @@
     <title>Vivek Weds Varshini — Traditional Indian Wedding Celebration</title>
     <meta name="description" content="|| Shree Ganeshay Namah || Together with their families, Vivek & Varshini cordially invite you to celebrate the holy union of their matrimony on December 19, 2026 at Kshatriya Kalyana Mandapam, Amalapuram." />
 
-    <!-- Console Filter to suppress third-party browser extensions and Chromium warnings -->
+    <!-- Console Filter to suppress third-party browser extensions, WebGPU Windows spam, and YouTube widget API warnings -->
     <script>
       (function() {
+        // 1. Suppress Chromium Windows WebGPU powerPreference warning
+        try {
+          if (typeof navigator !== 'undefined' && navigator.gpu && typeof navigator.gpu.requestAdapter === 'function') {
+            const origRequestAdapter = navigator.gpu.requestAdapter.bind(navigator.gpu);
+            navigator.gpu.requestAdapter = function(options) {
+              if (options && typeof options === 'object' && options.powerPreference) {
+                const { powerPreference, ...rest } = options;
+                return origRequestAdapter(rest);
+              }
+              return origRequestAdapter(options);
+            };
+          }
+        } catch (_) {}
+
         const origError = console.error;
         const origWarn = console.warn;
         const origLog = console.log;
+
         const noiseKeywords = [
           'chrome-extension',
           'couponCollection',
@@ -23,7 +38,13 @@
           'requestAdapter',
           'React DevTools',
           'web_accessible_resources',
-          'Failed to fetch dynamically imported module'
+          'Failed to fetch dynamically imported module',
+          'message channel closed',
+          'A listener indicated an asynchronous response',
+          'target origin provided',
+          "Failed to execute 'postMessage'",
+          'navigator.vibrate',
+          'Blocked call to navigator.vibrate'
         ];
 
         function matchesNoise(args) {
@@ -52,7 +73,30 @@
         };
 
         window.addEventListener('error', function(event) {
-          if (event.filename && event.filename.includes('chrome-extension')) {
+          const msg = String(event.message || '');
+          const file = String(event.filename || '');
+          if (
+            file.includes('chrome-extension') ||
+            msg.includes('chrome-extension') ||
+            msg.includes('couponCollection') ||
+            msg.includes('Failed to fetch dynamically imported module') ||
+            msg.includes('Denying load of') ||
+            msg.includes('web_accessible_resources')
+          ) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(event) {
+          const reason = event.reason ? String(event.reason.message || event.reason.stack || event.reason) : '';
+          if (
+            reason.includes('message channel closed') ||
+            reason.includes('A listener indicated an asynchronous response') ||
+            reason.includes('chrome-extension') ||
+            reason.includes('couponCollection') ||
+            reason.includes('Failed to fetch dynamically imported module')
+          ) {
             event.stopImmediatePropagation();
             event.preventDefault();
           }

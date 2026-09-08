@@ -25,7 +25,11 @@ export function getYouTubeWatchUrl(urlOrId) {
 
 export function getYouTubeEmbedUrl(urlOrId, params = '') {
   const id = getYouTubeId(urlOrId);
-  return id ? `https://www.youtube.com/embed/${id}${params ? `?${params}` : ''}` : '';
+  if (!id) return '';
+  const origin = typeof window !== 'undefined' && window.location.origin ? encodeURIComponent(window.location.origin) : '';
+  const originParam = origin ? `origin=${origin}` : '';
+  const fullParams = [params, originParam].filter(Boolean).join('&');
+  return `https://www.youtube.com/embed/${id}${fullParams ? `?${fullParams}` : ''}`;
 }
 
 export const weddingConfig = {
@@ -51,6 +55,7 @@ export const weddingConfig = {
       mapUrl: 'https://www.google.com/maps/place/Kshatriya+Kalyana+Mandapam/@16.5607114,81.993831,17z/data=!3m1!4b1!4m6!3m5!1s0x3a37e583a8300001:0xa14bf2c729820592!8m2!3d16.5607114!4d81.993831!16s%2Fg%2F11sskr8sqc!5m1!1e2!18m1!1e1?entry=ttu',
       description: 'Sacred turmeric ceremony & Nalugu rituals for Varshini amidst vibrant marigold blooms, joyful songs, and heartfelt blessings.',
     },
+    /* Sangeet commented out
     sangeet: {
       title: 'Sangeet Night',
       date: '18 December 2026',
@@ -59,6 +64,7 @@ export const weddingConfig = {
       mapUrl: 'https://www.google.com/maps/place/Kshatriya+Kalyana+Mandapam/@16.5607114,81.993831,17z/data=!3m1!4b1!4m6!3m5!1s0x3a37e583a8300001:0xa14bf2c729820592!8m2!3d16.5607114!4d81.993831!16s%2Fg%2F11sskr8sqc!5m1!1e2!18m1!1e1?entry=ttu',
       description: 'An evening filled with energetic family dance performances, classical fusion melodies, and delightful dinner.',
     },
+    */
     wedding: {
       title: 'Wedding Ceremony',
       date: '19 December 2026',

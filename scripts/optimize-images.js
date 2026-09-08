@@ -12,7 +12,8 @@ const TARGET_DIRS = [
   'src/images/pre_wedding',
   'src/images/touch_for_magic',
   'src/images/our_story',
-  'src/images/meet_couple'
+  'src/images/meet_couple',
+  'src/images/events'
 ];
 
 const MAX_DIMENSION = 1800; // Max width/height in px (plenty for high-DPI Retina mobile & 4K screens)

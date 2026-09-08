@@ -5,8 +5,10 @@ import { triggerHaptic } from '../utils/haptics';
 
 export default function FestivePopAnimation({ triggerOnOpen }) {
   // Fire a multi-cannon festive pop blast
-  const fireFestiveBlast = () => {
-    triggerHaptic('pop');
+  const fireFestiveBlast = (withHaptic = true) => {
+    if (withHaptic) {
+      triggerHaptic('pop');
+    }
 
     // 1. Center burst
     confetti({
@@ -40,10 +42,10 @@ export default function FestivePopAnimation({ triggerOnOpen }) {
     }, 300);
   };
 
-  // Trigger on initial component mount and whenever envelope is opened
+  // Trigger visual confetti on mount (no vibration without user gesture)
   useEffect(() => {
     const timer = setTimeout(() => {
-      fireFestiveBlast();
+      fireFestiveBlast(false);
     }, 600);
 
     return () => clearTimeout(timer);
@@ -51,7 +53,7 @@ export default function FestivePopAnimation({ triggerOnOpen }) {
 
   useEffect(() => {
     if (triggerOnOpen) {
-      fireFestiveBlast();
+      fireFestiveBlast(true);
     }
   }, [triggerOnOpen]);
 

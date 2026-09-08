@@ -62,7 +62,7 @@ export default function DressCode() {
               <div className="p-4 rounded-xl bg-[#2B0404] border border-[#D4AF37]/40 text-xs font-sans-clean text-[#FFF8E7]/85 flex items-start gap-3">
                 <Sparkles className="w-4 h-4 text-[#FFD700] shrink-0 mt-0.5" />
                 <span>
-                  Yellow & Gold attire is suggested for Haldi; Royal Festive Ethnic wear for Sangeet & Vivah.
+                  Yellow & Gold attire is suggested for Haldi; Royal Festive Ethnic wear for Vivah & Reception.
                 </span>
               </div>
             </div>

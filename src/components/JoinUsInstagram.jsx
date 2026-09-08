@@ -59,17 +59,17 @@ export default function JoinUsInstagram() {
             </p>
 
             {/* Action Buttons: RSVP & Share Invitation */}
-            <div className="pt-1 sm:pt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-3 pointer-events-auto">
+            <div className="pt-0.5 sm:pt-2 flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 pointer-events-auto">
               {/* 1. WhatsApp RSVP Button */}
               <a
                 href={rsvpUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => triggerHaptic('medium')}
-                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl bg-[rgb(88,11,26)] text-white font-sans-clean text-[8.5px] sm:text-xs md:text-sm uppercase font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-amber-300/40"
+                className="inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-6 py-1 sm:py-3 rounded-md sm:rounded-xl bg-[rgb(88,11,26)] text-white font-sans-clean text-[7.5px] sm:text-xs md:text-sm uppercase font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-amber-300/40"
                 title="Send your RSVP confirmation on WhatsApp"
               >
-                <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-white shrink-0" />
+                <MessageCircle className="w-2.5 h-2.5 sm:w-4 sm:h-4 fill-current text-white shrink-0" />
                 <span>RSVP on WhatsApp</span>
               </a>
 
@@ -79,10 +79,10 @@ export default function JoinUsInstagram() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => triggerHaptic('medium')}
-                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl bg-[#075E54] hover:bg-[#128C7E] text-white font-sans-clean text-[8.5px] sm:text-xs md:text-sm uppercase font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-[#25D366]/40"
+                className="inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-6 py-1 sm:py-3 rounded-md sm:rounded-xl bg-[#075E54] hover:bg-[#128C7E] text-white font-sans-clean text-[7.5px] sm:text-xs md:text-sm uppercase font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-[#25D366]/40"
                 title="Forward this wedding invitation on WhatsApp"
               >
-                <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#25D366] shrink-0" />
+                <Share2 className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-[#25D366] shrink-0" />
                 <span>Share with Family</span>
               </a>
             </div>

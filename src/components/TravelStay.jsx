@@ -49,9 +49,9 @@ export default function TravelStay() {
             {/* Redirect Call Number with Icon */}
             <a
               href="tel:8500294527"
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-emerald-700 text-white hover:bg-emerald-600 font-sans-clean text-sm font-bold uppercase tracking-wider shadow-xl transition-transform hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 rounded-full bg-emerald-700 text-white hover:bg-emerald-600 font-sans-clean text-xs sm:text-sm font-bold uppercase tracking-wider shadow-xl transition-transform hover:scale-105"
             >
-              <PhoneCall className="w-5 h-5 text-[#FFD700]" />
+              <PhoneCall className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFD700]" />
               <span>Call: 8500294527</span>
             </a>
 
@@ -60,9 +60,9 @@ export default function TravelStay() {
               href="https://wa.me/918500294527"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-[#25D366] text-white hover:bg-[#20ba5a] font-sans-clean text-sm font-bold uppercase tracking-wider shadow-xl transition-transform hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 rounded-full bg-[#25D366] text-white hover:bg-[#20ba5a] font-sans-clean text-xs sm:text-sm font-bold uppercase tracking-wider shadow-xl transition-transform hover:scale-105"
             >
-              <MessageCircle className="w-5 h-5 fill-current text-white" />
+              <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 fill-current text-white" />
               <span>Contact on WhatsApp: 8500294527</span>
             </a>
 

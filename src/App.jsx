@@ -23,132 +23,70 @@ export default function App() {
   const [isOpened, setIsOpened] = useState(false);
   const [triggerPop, setTriggerPop] = useState(0);
 
-  // Disable browser automatic scroll restoration and force top: 0 on start
+  // Clear any past session storage so Envelope page always appears on fresh load
   useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    try {
+      sessionStorage.removeItem('wedding_opened');
+    } catch (_) {}
   }, []);
 
-  // Lock scroll while gate is closed and strictly reset scroll to top on open
+  // Ensure body and html overflow styles are completely clear for native scrolling
   useEffect(() => {
-    if (!isOpened) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      });
-    }
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  }, [isOpened]);
+
+  // If gate is closed, scrolling with mouse wheel down or pressing down/space opens the invitation
+  useEffect(() => {
+    if (isOpened) return;
+
+    const handleInitialWheel = (e) => {
+      if (e.deltaY > 15) {
+        handleOpenEnvelope();
+      }
+    };
+
+    const handleInitialKey = (e) => {
+      if (['ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) {
+        handleOpenEnvelope();
+      }
+    };
+
+    window.addEventListener('wheel', handleInitialWheel, { passive: true });
+    window.addEventListener('keydown', handleInitialKey);
+
     return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      window.removeEventListener('wheel', handleInitialWheel);
+      window.removeEventListener('keydown', handleInitialKey);
     };
   }, [isOpened]);
 
-  // Dynamic overscroll control: allow top pull-down to reload, lock bottom ending page, and sync theme-color
+  // Sync mobile browser address bar theme-color on scroll
   useEffect(() => {
-    let touchStartY = 0;
     const metaThemeColor = document.getElementById('meta-theme-color');
+    if (!metaThemeColor) return;
 
-    const getMaxScroll = () => {
-      return Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight
-      ) - window.innerHeight;
-    };
-
-    const handleScrollThemeAndLock = () => {
-      const scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      const maxScroll = getMaxScroll();
+    const handleScrollTheme = () => {
       const storyEl = document.getElementById('story');
-
-      // Theme color for mobile address bar
-      if (metaThemeColor) {
-        if (storyEl && storyEl.getBoundingClientRect().top <= 80) {
-          metaThemeColor.setAttribute('content', '#3A0303');
-        } else {
-          metaThemeColor.setAttribute('content', '#257CE6');
-        }
-      }
-
-      // Dynamic overscroll-behavior-y:
-      // At the top of page: 'auto' so user can pull down to reload
-      // Scrolled down: 'none' so mobile browser cannot bounce or overscroll past the ending page!
-      if (scrollY < 120) {
-        document.documentElement.style.overscrollBehaviorY = 'auto';
-        document.body.style.overscrollBehaviorY = 'auto';
+      if (storyEl && storyEl.getBoundingClientRect().top <= 80) {
+        metaThemeColor.setAttribute('content', '#3A0303');
       } else {
-        document.documentElement.style.overscrollBehaviorY = 'none';
-        document.body.style.overscrollBehaviorY = 'none';
-      }
-
-      // Hard clamp: strictly prevent scrolling beyond ending page
-      if (scrollY > maxScroll && maxScroll > 0) {
-        window.scrollTo({ top: maxScroll, left: 0, behavior: 'instant' });
+        metaThemeColor.setAttribute('content', '#257CE6');
       }
     };
 
-    const handleTouchStart = (e) => {
-      if (e.touches && e.touches.length === 1) {
-        touchStartY = e.touches[0].clientY;
-      }
-    };
-
-    const handleTouchMove = (e) => {
-      if (!isOpened) {
-        if (e.cancelable) e.preventDefault();
-        return;
-      }
-
-      if (!e.touches || e.touches.length !== 1) return;
-      const currentY = e.touches[0].clientY;
-      const deltaY = currentY - touchStartY;
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      const maxScroll = getMaxScroll();
-
-      // At bottom boundary: strictly lock upward dragging (prevents rubber-banding/overflow past the ending page)
-      if (scrollTop >= maxScroll - 2 && deltaY < 0) {
-        if (e.cancelable) e.preventDefault();
-      }
-    };
-
-    const handleWheel = (e) => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      const maxScroll = getMaxScroll();
-      if (scrollTop >= maxScroll - 1 && e.deltaY > 0) {
-        if (e.cancelable) e.preventDefault();
-      }
-    };
-
-    window.addEventListener('scroll', handleScrollThemeAndLock, { passive: true });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('wheel', handleWheel, { passive: false });
-
-    handleScrollThemeAndLock();
+    window.addEventListener('scroll', handleScrollTheme, { passive: true });
+    handleScrollTheme();
 
     return () => {
-      window.removeEventListener('scroll', handleScrollThemeAndLock);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleScrollTheme);
     };
-  }, [isOpened]);
+  }, []);
 
   const handleOpenEnvelope = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     setIsOpened(true);
     setIsMuted(false);
     setTriggerPop((prev) => prev + 1);
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    });
   };
 
   const toggleAudio = () => {
@@ -161,7 +99,7 @@ export default function App() {
       <MouseFollower />
 
       {/* Initial Gate Invitation Card - Shown on start */}
-      <EnvelopeGate onOpen={handleOpenEnvelope} />
+      <EnvelopeGate onOpen={handleOpenEnvelope} isOpen={isOpened} />
 
       {/* Floating Shehnai/Flute Audio Player (Initialized early, UI shown when opened) */}
       <MusicPlayer isMuted={isMuted} toggleAudio={toggleAudio} isOpened={isOpened} />

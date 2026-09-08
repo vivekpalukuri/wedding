@@ -5,14 +5,61 @@ import gateBackdrop from '../images/decorations/royal_gate_backdrop.jpg';
 import gatePortrait from '../images/decorations/royal_gate_portrait.jpg';
 import { triggerHaptic } from '../utils/haptics';
 
-export default function EnvelopeGate({ onOpen }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function EnvelopeGate({ onOpen, isOpen = false }) {
+  const [internalOpen, setInternalOpen] = useState(isOpen);
+  const isGateOpen = isOpen || internalOpen;
 
   const handleOpen = () => {
     triggerHaptic('heavy');
-    setIsOpen(true);
+    setInternalOpen(true);
     onOpen();
   };
+
+  // Allow mouse wheel scrolling down, touch swipe up/down, or arrow keys to open the invitation
+  React.useEffect(() => {
+    if (isGateOpen) return;
+
+    let touchStartY = 0;
+
+    const handleWheel = (e) => {
+      if (e.deltaY > 15) {
+        handleOpen();
+      }
+    };
+
+    const handleTouchStart = (e) => {
+      if (e.touches && e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchEnd = (e) => {
+      if (e.changedTouches && e.changedTouches.length === 1) {
+        const deltaY = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(deltaY) > 35) {
+          handleOpen();
+        }
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (['ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) {
+        handleOpen();
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   // Generate 18 floating golden dust / diya firefly particles
   const floatingParticles = useMemo(() => {
@@ -28,7 +75,7 @@ export default function EnvelopeGate({ onOpen }) {
 
   return (
     <AnimatePresence>
-      {!isOpen && (
+      {!isGateOpen && (
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.04, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
@@ -238,7 +285,7 @@ export default function EnvelopeGate({ onOpen }) {
               className="font-sans-clean text-[clamp(8.5px,1.05vw,11px)] uppercase tracking-[0.22em] text-[#E5C158] font-bold mt-2.5 sm:mt-3 flex items-center justify-center gap-1.5 opacity-95"
             >
               <span>🪷</span>
-              <span>Tap the button above to begin our wedding journey</span>
+              <span>Tap button or scroll down to begin our wedding journey</span>
               <span>🪷</span>
             </motion.p>
 

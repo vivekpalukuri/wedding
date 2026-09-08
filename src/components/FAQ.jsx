@@ -12,11 +12,11 @@ export default function FAQ() {
     },
     {
       q: 'What attire is recommended for different ceremonies?',
-      a: 'For Haldi: Yellow/Gold ethnic attire; For Sangeet: Festive Indo-Western or Ethnic wear; For Vivah (Main Wedding): Traditional Silk Sarees, Kanjivaram, Pattu Veshti / Dhoti Kurta.',
+      a: 'For Haldi: Yellow/Gold ethnic attire; For Vivah (Main Wedding): Traditional Silk Sarees, Kanjivaram, Pattu Veshti / Dhoti Kurta.',
     },
     {
       q: 'What type of food will be served at the wedding?',
-      a: 'A lavish 21-item traditional South Indian Kalyana Bhojanam (Satvik Pure Vegetarian) will be served on banana leaves after the ceremony, as well as a North Indian Royal Buffet during the Sangeet & Evening Reception.',
+      a: 'A lavish 21-item traditional South Indian Kalyana Bhojanam (Satvik Pure Vegetarian) will be served on banana leaves after the ceremony, as well as a Royal Feast during the Evening Reception.',
     },
     {
       q: 'Is transport assistance available for outstation guests?',

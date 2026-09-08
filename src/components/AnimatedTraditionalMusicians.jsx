@@ -108,7 +108,7 @@ export default function AnimatedTraditionalMusicians() {
             {/* Embedded Live Video */}
             {isPlaying && (
               <iframe
-                src={`https://www.youtube.com/embed/IlgGGiPrvJA?autoplay=1&mute=${isMuted ? '1' : '0'}&loop=1&playlist=IlgGGiPrvJA&controls=0&modestbranding=1&rel=0&enablejsapi=1`}
+                src={`https://www.youtube.com/embed/IlgGGiPrvJA?autoplay=1&mute=${isMuted ? '1' : '0'}&loop=1&playlist=IlgGGiPrvJA&controls=0&modestbranding=1&rel=0&enablejsapi=1&origin=${typeof window !== 'undefined' ? encodeURIComponent(window.location.origin) : ''}`}
                 title="Real Traditional Dhol Musicians Live Video"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 className="w-full h-full border-0 pointer-events-none scale-125 mix-blend-screen"

@@ -103,7 +103,7 @@ export default function MusicPlayer({ isMuted, toggleAudio, isOpened }) {
         <iframe
           id="wedding-bg-music-player"
           ref={iframeRef}
-          src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+          src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1&origin=${typeof window !== 'undefined' ? encodeURIComponent(window.location.origin) : ''}&widget_referrer=${typeof window !== 'undefined' ? encodeURIComponent(window.location.href) : ''}`}
           title="Wedding Celebration Song"
           allow="autoplay; encrypted-media"
           className="w-full h-full border-0"

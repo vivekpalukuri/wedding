@@ -4,6 +4,8 @@ import { Calendar, MapPin, Pause, Play, ChevronLeft, ChevronRight } from 'lucide
 import { weddingConfig } from '../utils/config';
 import { createGoogleCalendarUrl } from '../utils/calendar';
 import { triggerHaptic } from '../utils/haptics';
+import groomHaldiImg from '../images/events/groom_haldi.webp';
+import brideHaldiImg from '../images/events/bride_haldi.webp';
 import haldiImg from '../images/events/haldi.webp';
 import sangeetImg from '../images/events/sangeet.webp';
 import weddingImg from '../images/events/wedding.webp';
@@ -29,7 +31,7 @@ export default function Events() {
       venue: weddingConfig.events.groomHaldi.venue,
       mapUrl: weddingConfig.events.groomHaldi.mapUrl,
       description: weddingConfig.events.groomHaldi.description,
-      image: haldiImg,
+      image: groomHaldiImg,
     });
   }
 
@@ -41,7 +43,7 @@ export default function Events() {
       venue: weddingConfig.events.brideHaldi.venue,
       mapUrl: weddingConfig.events.brideHaldi.mapUrl,
       description: weddingConfig.events.brideHaldi.description,
-      image: haldiImg,
+      image: brideHaldiImg,
     });
   }
 
@@ -57,6 +59,7 @@ export default function Events() {
     });
   }
 
+  /* Sangeet ceremony commented out as requested
   if (weddingConfig.events.sangeet) {
     eventsList.push({
       title: weddingConfig.events.sangeet.title,
@@ -68,6 +71,7 @@ export default function Events() {
       image: sangeetImg,
     });
   }
+  */
 
   if (weddingConfig.events.wedding) {
     eventsList.push({
